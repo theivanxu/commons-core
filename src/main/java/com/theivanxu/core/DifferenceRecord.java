@@ -68,4 +68,15 @@ public class DifferenceRecord {
     public void setProfitOrLoss(boolean profitOrLoss) {
         this.profitOrLoss = profitOrLoss;
     }
+
+    @Override
+    public String toString() {
+        return "DifferenceRecord{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", qty=" + qty +
+                ", init=" + init +
+                ", profitOrLoss=" + profitOrLoss +
+                '}';
+    }
 }

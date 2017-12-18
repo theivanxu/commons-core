@@ -38,6 +38,9 @@ public class MainTest
             System.out.println(warehouse.getId() + " --- " + warehousetreeSet.contains(warehouse));
         }
 
+        Map<String, List<Warehouse>> map = getSeparators(result);
+        System.out.println(map);
+
         Warehouse wh = new Warehouse(1L, "北京仓库", "20171126", 2, 3.9);
         System.out.println("end: " + wh + " --- " + warehousetreeSet.contains(wh));
 
@@ -60,6 +63,22 @@ public class MainTest
         }
 
         return new ArrayList<>(temp.values());
+    }
+
+    private static Map<String, List<Warehouse>> getSeparators(List<Warehouse> list){
+        Map<String, List<Warehouse>> temp = new LinkedHashMap<>();
+
+        for (Warehouse warehouse :
+                list) {
+            String key = warehouse.getName() + "&" + warehouse.getSerial();
+            if (temp.containsKey(key)){
+                temp.get(key).add(warehouse);
+            } else {
+                temp.put(key, new ArrayList<Warehouse>(){{add(warehouse);}});
+            }
+        }
+
+        return temp;
     }
 
 

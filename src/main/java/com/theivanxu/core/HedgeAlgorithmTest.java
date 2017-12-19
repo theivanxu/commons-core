@@ -32,12 +32,13 @@ public class HedgeAlgorithmTest {
         list.add(record9);
         list.add(record10);
 
-        System.out.println(hedgeResultCollection(list));
+        System.out.println(new HedgeAlgorithmTest().hedgeResultCollection(list));
+
 
 
     }
 
-    public static List<DifferenceRecord> hedgeResultCollection(List<DifferenceRecord> list){
+    private List<DifferenceRecord> hedgeResultCollection(List<DifferenceRecord> list){
         List<DifferenceRecord> profit = new ArrayList<DifferenceRecord>();
         List<DifferenceRecord> loss = new ArrayList<DifferenceRecord>();
         BigDecimal profitNumber = BigDecimal.ZERO;
@@ -65,26 +66,7 @@ public class HedgeAlgorithmTest {
 
         } else if (BigDecimal.ZERO.compareTo(difference) == -1) {
             // sort profit
-            profit.sort(Comparator.comparing(DifferenceRecord::getInit).reversed());
-            System.out.println("profit" + profit);
-
-            Iterator iterator = profit.listIterator();
-            boolean flag = true;
-            while(iterator.hasNext() && flag){
-                DifferenceRecord rc = (DifferenceRecord) iterator.next();
-                difference = difference.subtract(rc.getInit());
-                if (BigDecimal.ZERO.compareTo(difference) == 0) {
-                    unmodifies.add(rc);
-                    iterator.remove();
-                    flag = false;
-                } else if (BigDecimal.ZERO.compareTo(difference) == -1) {
-                    unmodifies.add(rc);
-                    iterator.remove();
-                } else if (BigDecimal.ZERO.compareTo(difference) == 1) {
-                    rc.setQty(rc.getInit().add(difference));
-                    flag = false;
-                }
-            }
+            dispelUnmodifiedRecord(profit, difference);
             // TODO: 17/12/19 余下盘盈差异部分完全关闭,可以有一个部分关闭,不在列表中无状态修改
         } else if (BigDecimal.ZERO.compareTo(difference) == 1) {
             // sort loss
@@ -115,6 +97,26 @@ public class HedgeAlgorithmTest {
 
 
         return unmodifies;
+    }
+
+    private void dispelUnmodifiedRecord(List<DifferenceRecord> list, BigDecimal difference){
+        list.sort(Comparator.comparing(DifferenceRecord::getInit).reversed());
+
+        Iterator iterator = list.listIterator();
+        boolean flag = true;
+        while(iterator.hasNext() && flag){
+            DifferenceRecord rc = (DifferenceRecord) iterator.next();
+            difference = difference.subtract(rc.getInit());
+            if (BigDecimal.ZERO.compareTo(difference) == 0) {
+                iterator.remove();
+                flag = false;
+            } else if (BigDecimal.ZERO.compareTo(difference) == -1) {
+                iterator.remove();
+            } else if (BigDecimal.ZERO.compareTo(difference) == 1) {
+                rc.setQty(difference.add(rc.getInit()));
+                flag = false;
+            }
+        }
     }
 
 }

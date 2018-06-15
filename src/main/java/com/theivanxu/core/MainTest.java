@@ -9,7 +9,7 @@ public class MainTest
 {
 
     public static void main(String[] args) {
-        List<Warehouse> result = new ArrayList<>();
+/*        List<Warehouse> result = new ArrayList<>();
         Warehouse warehouse1 = new Warehouse(1L, "北京仓库", "20171124", 1, 3.9);
         Warehouse warehouse2 = new Warehouse(2L, "北京仓库", "20171125", 1, 2.9);
         Warehouse warehouse3 = new Warehouse(3L, "天津仓库", "20171124", 1, 1.9);
@@ -48,7 +48,11 @@ public class MainTest
         System.out.println(" ------------- " + getUniqueness(result) + " --------------- ");
         List<Warehouse> warehouses = new ArrayList<>(warehousetreeSet);
 
-        System.out.println("result: " + warehouses);
+        System.out.println("result: " + warehouses);*/
+
+        String str = "111,222,333,444,555,111,333";
+        String out = wipeOffString(str).toString();
+        System.out.println(out);
     }
 
     private static List<Warehouse> getUniqueness(List<Warehouse> list){
@@ -79,6 +83,15 @@ public class MainTest
         }
 
         return temp;
+    }
+
+    private static String wipeOffString(String str) {
+        String[] arr = str.split(",");
+        Set<String> tmp = new HashSet<>();
+        for (String s : arr) {
+            tmp.add(s);
+        }
+        return tmp.toString();
     }
 
 
